@@ -20,6 +20,11 @@ You think you can get away that easy??? Go back and save your money.
 
 
 :: encounter {"position":"875,200","size":"100,100"}
+(set: $money to $money - $hack)
+(if: $success is True)[
+(set: $encryption to $encryption + 1) 
+]
+
 (if: $vault_built is false)[
 
 You encounter a hacker who is planning to steal your money. You need to secure your money. What shall you do?
@@ -55,7 +60,7 @@ Encryption level: $encryption/10
 
 
 
-:: make a vault {"position":"825,350","size":"100,100"}
+:: make a vault {"position":"875,350","size":"100,100"}
 (set: $vault_built to true)
 (set: $money to $money - $hack)
 
@@ -89,18 +94,34 @@ You are a multimillionaire with $$money, and many people are trying to steal you
 
 
 :: upgrade encryption {"position":"675,325","size":"100,100"}
-Upgrading encryption makes the hackers take less money away from you every turn.
-
+(if: $encryption is 0)[{
+(set: $answer to (prompt: 
+"Upgrading encryption makes the hackers take less money away from you every turn.
 Currently, the hackers are taking $$hack every turn.
-(if: $encryption is 0)[
-(set: $puzzle to "URYYB")
-{
-(set: $answer to (prompt: "You encounter an encrypted message: '$puzzle'. It's a simple Caesar cipher with a shift of 13. Solve it to upgrade your encryption.
-
+You encounter an encrypted message: 'URYYB'. It's a simple Caesar cipher with a shift of 13. Solve it to upgrade your encryption.
 You may tab out and look on Google for help.
 Decrypt the message: ", ""))
 
-(if: $answer is "HELLO")[You successfully upgraded your encryption! (set: $encryption to $encryption + 1) (set: $hack to $hack - 100000) [[continue|encounter]]]
-(else:)[Incorrect! The hackers stole another $$hack. (set: $money to $money - $hack) [[go back |encounter]]]
-}
-]
+(if: $answer is "HELLO")[You successfully upgraded your encryption!(set: $success to True) (set: $hack to $hack - 100000) [[continue|encounter]]]
+(else:)[Incorrect! The hackers stole another $$hack. (set: $money to $money - $hack)(set: $success to False) [[go back |encounter]]]
+}]
+(if: $encryption is 1)[
+{
+(set: $answer to (prompt: "Currently, the hackers are taking $$hack every turn.
+You encounter an encrypted message: 'IWT KPAJT XH GTPSN'. It's another Ceaser cipher.
+Decrypt the message: ", ""))
+
+(if: $answer is "THE VALUE IS READY")[You successfully upgraded your encryption! (set: $success to True) (set: $hack to $hack - 100000)[[continue|encounter]]]
+(else:)[Incorrect! The hackers stole another $$hack. (set: $money to $money - $hack)(set: $success to False) [[go back |encounter]]]
+}]
+(if: $encryption is 2)[
+{
+(set: $answer to (prompt: "Currently, the hackers are taking $$hack every turn.
+You encounter an encrypted message: ''.
+Decrypt the message: ", ""))
+
+(if: $answer is "")[You successfully upgraded your encryption! (set: $success to True) (set: $hack to $hack - 100000)[[continue|encounter]]]
+(else:)[Incorrect! The hackers stole another $$hack. (set: $money to $money - $hack)(set: $success to False) [[go back |encounter]]]
+}]
+
+
