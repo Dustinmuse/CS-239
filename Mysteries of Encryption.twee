@@ -25,8 +25,6 @@ You think you can get away that easy??? Go back and save your money.
 (set: $encryption to $encryption + 1) 
 ]
 
-(if: $vault_built is false)[
-
 You encounter a hacker who is planning to steal your money. You need to secure your money. What shall you do?
 
 Current money: $$money
@@ -34,44 +32,27 @@ Current money: $$money
 Encryption level: $encryption/10
 ]
 [[upgrade encryption]]
-[[increase money]]
+[[steal money]]
 [[make a vault]]
+
+
+:: make a vault {"position":"725,350","size":"100,100"}
+(if: $winnable is true)[
+You now have a vault! You have won the game!
+
+[[restart|start]]
 ]
-
-(if: $vault_built is true)[
-
-You encounter a hacker who is planning to steal your money. You need to secure your money. What shall you do?
-
-Current money: $$money
-(if: $encryption is not 0)[
-Encryption level: $encryption/10
-]
-[[upgrade encryption]]
-[[increase money]]
-[[increase vault size]]
-]
-
-
-:: increase money {"position":"1050,325","size":"100,100"}
-
-
-
-:: increase vault size {"position":"925,450","size":"100,100"}
-
-
-
-:: make a vault {"position":"875,350","size":"100,100"}
-(set: $vault_built to true)
-(set: $money to $money - $hack)
-
-You now have a vault! But... you have lost $$hack.
+(if: $winnable is false)[
+You do not have enough money to build this.
 
 [[continue|encounter]]
+]
 
 
 :: start {"position":"725,75","size":"100,100"}
 (set: $hack to 1000000)
 (set: $encryption to 0)
+(set: $winnable to false)
 
 (if: $coward is true)[
 
@@ -93,7 +74,71 @@ You are a multimillionaire with $$money, and many people are trying to steal you
 ]
 
 
-:: upgrade encryption {"position":"675,325","size":"100,100"}
+:: steal money {"position":"1050,325","size":"100,100"}
+(set: $problem to (random: 1, 5))
+(if: $problem is 1)[{
+(set: $answer to (prompt: 
+"Stealing money is a good way to not lose, but you are going to need to find more ways to keep your money safe.
+Currently, the hackers are taking $$hack every turn.
+You need to encrypt this message: 'CS239 RULES'. Make it a Caesar cipher with a shift of 9. Solve it to increase your money.
+You may tab out and look on Google for help.
+Decrypt the message: ", ""))
+
+(if: $answer is "LB239 ADUNB")[You successfully stole money!(set: $money to $money + 400000) [[continue|encounter]]]
+(else:)[Incorrect! The hackers stole another $$hack. (set: $money to $money - $hack) [[go back |encounter]]]
+}]
+
+(if: $problem is 2)[{
+(set: $answer to (prompt: 
+"Stealing money is a good way to not lose, but you are going to need to find more ways to keep your money safe.
+Currently, the hackers are taking $$hack every turn.
+You need to encrypt this message: 'DOG'. Make it in NATO phonetic alphabet cipher. Solve it to increase your money.
+You may tab out and look on Google for help.
+Make all characters capital.
+Decrypt the message: ", ""))
+
+(if: $answer is "DELTA OSCAR GOLF")[You successfully stole money!(set: $money to $money + 400000) [[continue|encounter]]]
+(else:)[Incorrect! The hackers stole another $$hack. (set: $money to $money - $hack) [[go back |encounter]]]
+}]
+
+(if: $problem is 3)[{
+(set: $answer to (prompt: 
+"Stealing money is a good way to not lose, but you are going to need to find more ways to keep your money safe.
+Currently, the hackers are taking $$hack every turn.
+You need to encrypt this message: 'GIFT'. Make it in reverse cipher. Solve it to increase your money.
+You may tab out and look on Google for help.
+Decrypt the message: ", ""))
+
+(if: $answer is "TFIG")[You successfully stole money!(set: $money to $money + 400000) [[continue|encounter]]]
+(else:)[Incorrect! The hackers stole another $$hack. (set: $money to $money - $hack) [[go back |encounter]]]
+}]
+
+(if: $problem is 4)[{
+(set: $answer to (prompt: 
+"Stealing money is a good way to not lose, but you are going to need to find more ways to keep your money safe.
+Currently, the hackers are taking $$hack every turn.
+You need to encrypt this message: 'GOOD LUCK'. Make it in Affine cipher with a slope of 5 and an intercept of 8. Solve it to increase your money.
+You may tab out and look on Google for help.
+Decrypt the message: ", ""))
+
+(if: $answer is "MAAX LESG")[You successfully stole money!(set: $money to $money + 400000) [[continue|encounter]]]
+(else:)[Incorrect! The hackers stole another $$hack. (set: $money to $money - $hack) [[go back |encounter]]]
+}]
+
+(if: $problem is 5)[{
+(set: $answer to (prompt: 
+"Stealing money is a good way to not lose, but you are going to need to find more ways to keep your money safe.
+Currently, the hackers are taking $$hack every turn.
+You need to encrypt this message: 'HAPPY'. Make it into Caesar cipher with a shift of -4 then reverse it. Solve it to increase your money.
+You may tab out and look on Google for help.
+Decrypt the message: ", ""))
+
+(if: $answer is "ULLWD")[You successfully stole money!(set: $money to $money + 400000) [[continue|encounter]]]
+(else:)[Incorrect! The hackers stole another $$hack. (set: $money to $money - $hack) [[go back |encounter]]]
+}]
+
+
+:: upgrade encryption {"position":"900,350","size":"100,100"}
 (if: $encryption is 0)[{
 (set: $answer to (prompt: 
 "Upgrading encryption makes the hackers take less money away from you every turn.
@@ -123,5 +168,3 @@ Decrypt the message: ", ""))
 (if: $answer is "")[You successfully upgraded your encryption! (set: $success to True) (set: $hack to $hack - 100000)[[continue|encounter]]]
 (else:)[Incorrect! The hackers stole another $$hack. (set: $money to $money - $hack)(set: $success to False) [[go back |encounter]]]
 }]
-
-
