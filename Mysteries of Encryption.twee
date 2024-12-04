@@ -12,22 +12,16 @@ Mysteries of Encryption
 }
 
 
-:: coward {"position":"525,25","size":"100,100"}
-(set: $coward to true)
-You think you can get away that easy??? Go back and save your money.
-
-[[go back|start]]
-
-
-:: encounter {"position":"875,200","size":"100,100"}
+:: encounter {"position":"875,175","size":"100,100"}
 (set: $money to $money - $hack)
+
 (if: $success is True)[
 (set: $encryption to $encryption + 1) 
 ]
 
 (if: $vault_built is false)[
 
-You encounter a hacker who is planning to steal your money. You need to secure your money. What shall you do?
+Hackers have stolen $$hack. You need to secure your money. What shall you do?
 
 Current money: $$money
 (if: $encryption is not 0)[
@@ -36,7 +30,7 @@ Hackers take $$hack every turn
 ]
 [[upgrade encryption]]
 [[increase money]]
-[[make a vault]]
+[[make a vault ($1 billion trillion jillion)|make a vault]]
 ]
 
 (if: $vault_built is true)[
@@ -54,11 +48,11 @@ Currently, the hackers are taking $$hack every turn.
 ]
 
 
-:: increase money {"position":"1050,325","size":"100,100"}
+:: increase money {"position":"1000,300","size":"100,100"}
 
 
 
-:: increase vault size {"position":"925,450","size":"100,100"}
+:: increase vault size {"position":"900,500","size":"100,100"}
 
 
 
@@ -71,35 +65,26 @@ You now have a vault! But... you have lost $$hack.
 [[continue|encounter]]
 
 
-:: start {"position":"725,75","size":"100,100"}
-(set: $hack to 1000000)
-(set: $encryption to 0)
-
-(if: $coward is true)[
-
-(set: $money to 2500000)
-
-You have lost half of your money for backing out. You now have $$money.
-
-[[continue|encounter]]
-]
-(else:)[
-
-(set: $vault_built to false)
+:: start {"position":"725,50","size":"100,100"}
 (set: $money to 5000000)
 
-You are a multimillionaire with $$money, and many people are trying to steal your money. Can you survive?
+You are a multimillionaire with $$money.
 
-[[no|coward]]
-[[yes|encounter]]
-]
+Due to your poor data encryption practices, hackers are rapidly stealing your money! 
+
+[[oh noes!|encounter]]
+
+(set: $hack to 1000000)
+(set: $encryption to 9)
+(set: $vault_built to false)
 
 
-:: upgrade encryption {"position":"675,325","size":"100,100"}
+:: upgrade encryption {"position":"675,275","size":"100,100"}
 (if: $encryption is 0)[{
 (set: $answer to (prompt: 
 "Upgrading encryption makes the hackers take less money away from you every turn.
-You encounter an encrypted message: 'URYYB'. It's a simple Caesar cipher with a shift of 13. Solve it to upgrade your encryption.
+You encounter an encrypted message: URYYB
+It's a simple Caesar cipher with a shift of 13. Solve it to upgrade your encryption.
 You may tab out and look on Google for help.
 Decrypt the message: ", ""))
 
@@ -109,7 +94,8 @@ Decrypt the message: ", ""))
 (if: $encryption is 1)[
 {
 (set: $answer to (prompt: "
-You encounter an encrypted message: 'IWT KPAJT XH GTPSN'. It's another Ceaser cipher.
+You encounter an encrypted message: IWT KPAJT XH GTPSN
+It's another Ceaser cipher.
 Decrypt the message: ", ""))
 
 (if: $answer is "THE VALUE IS READY")[You successfully upgraded your encryption! (set: $success to True) (set: $hack to $hack - 100000)[[continue|encounter]]]
@@ -119,10 +105,99 @@ Decrypt the message: ", ""))
 {
 (set: $answer to (prompt: "
 You encounter an encrypted message: 'R DZMG NLMVB'.
+Ceaser would be proud of you.
 Decrypt the message: ", ""))
 
-(if: $answer is "I WANT MONEY")[You successfully upgraded your encryption! (set: $success to True) (set: $hack to $hack - 100000)[[continue|encounter]]]
+(if: $answer is "I WANT MONEY")[All you millionaires ever think about is money. (set: $success to True) (set: $hack to $hack - 100000)
+[[so what?|encounter]]]
 (else:)[Incorrect! The hackers stole another $$hack. (set: $success to False) [[go back |encounter]]]
 }]
 
+(if: $encryption is 3)[{
+(set: $answer to (prompt: "
+You encounter an encrypted message: !ENO SIHT OD T'NAC I
+No hint seems to be available.elbaliava eb ot smees tnih oN
+Decrypt the message: ", ""))
+
+(if: $answer is "I CAN'T DO THIS ONE!")[Sure you can! Be more confident in yourself!
+(set: $success to True) (set: $hack to $hack - 100000)
+[[okay?|encounter]]]
+(else:)[Incorrect! The hackers stole another $$hack. (set: $success to False)[[go back |encounter]]]
+}]
+
+(if: $encryption is 4)[{
+(set: $answer to (prompt: "
+You encounter an encrypted message: 01010011 01010101 01010010 01000101 01001100 01011001 00100000 01010100 01001000 01001001 01010011 00100000 01001111 01001110 01000101 00100000 01000011 01000001 01001110 00100111 01010100 00100000 01000010 01000101 00100000 01010100 01001000 01001001 01010011 00100000 01001100 01001111 01001110 01000111 00101100 00100000 01001001 00100000 01001101 01000101 01000001 01001110 00100000 01000011 01001111 01001101 01000101 00100000 01001111 01001110
+No hint seems to be available.
+Decrypt the message: ", ""))
+
+(if: $answer is "SURELY THIS ONE CAN'T BE THIS LONG, I MEAN COME ON")[;D
+(set: $success to True) (set: $hack to $hack - 100000)
+[[very funny|encounter]]]
+(else:)[Incorrect! The hackers stole another $$hack. (set: $success to False)[[go back |encounter]]]
+}]
+
+(if: $encryption is 5)[{
+(set: $answer to (prompt: "
+You encounter an encrypted message: XSR K ZCBC ABIYDMTO OCI XFOVC, LYAUS
+This is a Vigenère Cipher. The key is 'KEY'.
+Decrypt the message: ", ""))
+(if: $answer is "NOT A VERY CREATIVE KEY THERE, BUCKO")[Excuse me?
+(set: $success to True) (set: $hack to $hack - 100000)
+
+
+[[sorry sorry I'll just leave sorry|encounter]]]
+(else:)[Incorrect! The hackers stole another $$hack. (set: $success to False)[[go back |encounter]]]
+}]
+
+(if: $encryption is 6)[{
+(set: $answer to (prompt: "dGhpcyBvbmUgaXMgbG93ZXJjYXNlIGJlbGlldmUgaXQgb3Igbm90
+This seems to be encoded in Base 64.
+Decrypt the message: ", ""))
+
+(if: $answer is "this one is lowercase believe it or not")[you successfully upgraded your encryption.
+(set: $success to True) (set: $hack to $hack - 100000)
+[[continue|encounter]]]
+(else:)[Incorrect! The hackers stole another $$hack. (set: $success to False)[[go back |encounter]]]
+}]
+
+(if: $encryption is 7)[{
+(set: $answer to (prompt: "48 45 58 41 44 45 43 49 4D 41 4C 20 49 53 20 43 4F 4F 4C
+This seems to be encoded in hexadecimal. Convert it to ASCII!
+Decrypt the message: ", ""))
+
+(if: $answer is "HEXADECIMAL IS COOL")[54 48 49 53 20 43 4C 41 53 53 20 57 41 53 20 43 4F 4F 4C
+(set: $success to True) (set: $hack to $hack - 100000)
+[[continue|encounter]]]
+(else:)[Incorrect! The hackers stole another $$hack. (set: $success to False)[[go back |encounter]]]
+}]
+
+(if: $encryption is 8)[{
+(set: $answer to (prompt: "UkVWRFQwUkZJRTlPUlNCTlQxSkZJRlJKVFVVZ1JrOVNJRlJJUlNCQlRsTlhSVkk9
+This seems to be encoded in Base 64, possibly multiple times!
+Decrypt the message: ", ""))
+
+(if: $answer is "@CÑ2SLq�5%")[You successfully upgraded your encryption!
+(set: $success to True) (set: $hack to $hack - 100000)
+[[continue|encounter]]]
+(else:)[Incorrect! The hackers stole another $$hack. (set: $success to False)[[go back |encounter]]]
+}]
+
+(if: $encryption is 9)[{
+(set: $answer to (prompt: "==EFC9SFuIyEu8SJuEzHPrTWIBJJYPGG
+This one is a doozy! First, Ceaser Cipher shift it by 12, reverse it, then decode it in base 64!
+Decrypt the message: ", ""))
+
+(if: $answer is "I JUST WANT TO BE DONE")[You maxed out your encryption! The hackers can no longer steal your money!
+(set: $success to True) (set: $hack to $hack - 100000)
+[[continue|encounter]]]
+(else:)[Incorrect! The hackers stole another $$hack. (set: $success to False)[[go back |encounter]]]
+}]
+
+(if: $encryption is 10)[{
+Dude, did you not just hear me? I said you're done.
+
+Pay attention. Come on, now.
+(set: $success to False)
+[[okay chill!!|encounter]]}]
 
